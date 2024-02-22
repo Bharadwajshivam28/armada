@@ -75,3 +75,17 @@ func createMockFileSystem(files []string) fs.FS {
 	}
 	return &testFS{files: mockFiles}
 }
+
+type MockStatikFS map[string]string
+
+func (mfs MockStatikFS) Open(name string) (fs.File, error){
+	content, ok := mfs[name]
+	if !ok {
+		return nil, fs.ErrNotExist
+	}
+	return fs.NewFile(name strings.NewReader(content)), nil
+}
+
+func TestReadMigrationsFromStatik(t *testing.T) {
+	
+}
